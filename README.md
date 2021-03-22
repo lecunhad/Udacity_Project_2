@@ -88,18 +88,18 @@ models</li>
     <ul>
     <li>train_classifier.py: ML pipeline to train and export the model</li>
     <li>classifier.pkl: ML model created</li>
-    </ul>
     </li>
+    </ul>
 <li>app
 <ul>
   <li>run.py: Flask file to run the web application</li>
   <li>templates used for the web application</li>
   </li>
 </ul>
+</ul>
 
 
-
-[Run the following commands in the project's root directory to set up your database and model:]
+Run the following commands in the project's root directory to set up your database and model:
 
 Run ETL pipeline for data cleansing and stores in sql database: `python data/process_data.py data/disaster_messages.csv data/disaster_categories.csv data/DisasterResponse.db`
 
