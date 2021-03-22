@@ -23,7 +23,6 @@
       <a href="#getting-started">Getting Started</a>
       <ul>
         <li><a href="#prerequisites">Pre Requisites</a></li>
-        <li><a href="#installation">Instalation</a></li>
       </ul>
     </li>
     <li><a href="#run">Running</a></li>
@@ -61,13 +60,6 @@ The notebook was developed in the environment Udacity Workspace IDE
 ### Prerequisites
 
 The Python version is 3.7+
-
-### Instalation
-
-!pip install -U scikit-learn
-
-(In case you already have the scikit learn installed, you just need to import the library before running the code)
-
 
 <!-- RUN -->
 ## Running
