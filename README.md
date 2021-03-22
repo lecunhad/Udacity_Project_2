@@ -80,32 +80,22 @@ There are three main folders at the workspace:
   <ul>
     <li>disaster_categories.csv: dataset including all the categories</li>
     <li>disaster_messages.csv: dataset including all the messages</li>
-    <li>process_data.py: ETL pipeline scripts to read, clean, and save data into a database</li>
-    <li>DisasterResponse.db: output of the ETL pipeline, i.e. SQLite database containing messages and categories data
+    <li>process_data.py: ETL pipeline to load, clean, and save the merged datasets into a sql database</li>
+    <li>DisasterResponse.db: SQLite database for storage the data
 models</li>
    </ul>
 <li>models
     <ul>
-    <li>train_classifier.py: machine learning pipeline scripts to train and export a classifier</li>
-    <li>classifier.pkl: output of the machine learning pipeline, i.e. a trained classifier</li>
+    <li>train_classifier.py: ML pipeline to train and export the model</li>
+    <li>classifier.pkl: ML model created</li>
     </ul>
     </li>
 <li>app
 <ul>
-<li>Indented item</li>
-<li>Indented item</li>
+  <li>run.py: Flask file to run the web application</li>
+  <li>templates used for the web application</li>
 </ul>
 </li>
-<li>Fourth item</li>
-</ul>
-
-
-train_classifier.py: machine learning pipeline scripts to train and export a classifier
-classifier.pkl: output of the machine learning pipeline, i.e. a trained classifier
-app
-run.py: Flask file to run the web application
-templates contains html file for the web application
-
 
 Run the following commands in the project's root directory to set up your database and model:
 
