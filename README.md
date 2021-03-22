@@ -97,13 +97,14 @@ models</li>
 </ul>
 </li>
 
-Run the following commands in the project's root directory to set up your database and model:
 
-Run ETL pipeline for data cleansing and stores in sql database: python data/process_data.py data/disaster_messages.csv data/disaster_categories.csv data/DisasterResponse.db
+## Run the following commands in the project's root directory to set up your database and model:
 
-Run ML pipeline to create the model: python models/train_classifier.py data/DisasterResponse.db models/classifier.pkl
+Run ETL pipeline for data cleansing and stores in sql database: `python data/process_data.py data/disaster_messages.csv data/disaster_categories.csv data/DisasterResponse.db`
 
-Go to app folder (cd app) and run the following command : python run.py
+Run ML pipeline to create the model: `python models/train_classifier.py data/DisasterResponse.db models/classifier.pkl`
+
+Go to app folder (cd app) and run the following command : `python run.py`
 
 Open the browser using the url http://0.0.0.0:3001 (if it doesn't work, find the workspace environmental variables with `env | grep WORK`, and you can open a new browser window and go to the address:`http://WORKSPACESPACEID-3001.WORKSPACEDOMAIN` replacing WORKSPACEID and WORKSPACEDOMAIN with your values)
 
