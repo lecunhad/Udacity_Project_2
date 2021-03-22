@@ -39,13 +39,20 @@
 <!-- ABOUT THE PROJECT -->
 ## About the project
 
-The objective of this project is to answer 3 business questions to meet the requirements of Project 1, from Udacity Data Scientist course. The chosen database was from Airbnb, with the objective of evaluating the data to assist students in Canada, a famous destination for studying the English language. 
+The objective of this project is to create a machine learning pipeline to categorize disaster events, through messages raised from people asking for help. These messages are sorted into categories such as Security, Fire, Military, etc.The project includes a web app where an emergency worker can input a new message and get classification results. This classification in a quickly way will help the emergency workers to address the needed support more efficiently and also display visualizations about the data. 
 
 ### Frameworks
 
 To run the notebook, it is necessary to install the following frameworks:
 
 * [Scikit Learn](https://scikit-learn.org/)
+* [Pandas](https://pandas.pydata.org/)
+* [Numpy](https://numpy.org/)
+* [Sqlalchemy](https://www.sqlalchemy.org/)
+* [NLTK - punkt, stopwords](https://www.nltk.org//)
+* [Flask](https://flask.palletsprojects.com/en/1.1.x/)
+* [Matplotlib](https://matplotlib.org/)
+
 
 <!-- GETTING STARTED -->
 ## Getting Started
@@ -54,7 +61,7 @@ The notebook was developed in the environment [Google Colab](https://colab.resea
 
 ### Prerequisites
 
-This notebook was tested using Python 3.7+
+The Python version is 3.7+
 
 ### Instalation
 
@@ -66,7 +73,30 @@ This notebook was tested using Python 3.7+
 <!-- RUN -->
 ## Running
 
-There are 2 notebooks to be executed. Udacity_Projeto_1_Part_I is related to the first business question, and Udacity_Projeto_1_Part_II. The databases to be used on both is calendar and listings (they was uploaded in [Google Drive](https://drive.google.com/drive/folders/19OyP2QDz1iAcIGm-K_yVUe9yaePowjec?usp=sharing).
+There are three main folders:
+
+data
+disaster_categories.csv: dataset including all the categories
+disaster_messages.csv: dataset including all the messages
+process_data.py: ETL pipeline scripts to read, clean, and save data into a database
+DisasterResponse.db: output of the ETL pipeline, i.e. SQLite database containing messages and categories data
+models
+train_classifier.py: machine learning pipeline scripts to train and export a classifier
+classifier.pkl: output of the machine learning pipeline, i.e. a trained classifier
+app
+run.py: Flask file to run the web application
+templates contains html file for the web application
+
+
+Run the following commands in the project's root directory to set up your database and model:
+
+Run ETL pipeline for data cleansing and stores in sql database: python data/process_data.py data/disaster_messages.csv data/disaster_categories.csv data/DisasterResponse.db
+
+Run ML pipeline to create the model: python models/train_classifier.py data/DisasterResponse.db models/classifier.pkl
+
+Go to app folder (cd app) and run the following command : python run.py
+
+Open the browser using the url http://0.0.0.0:3001 (if it doesn't work, find the workspace environmental variables with `env | grep WORK`, and you can open a new browser window and go to the address:`http://WORKSPACESPACEID-3001.WORKSPACEDOMAIN` replacing WORKSPACEID and WORKSPACEDOMAIN with your values)
 
 
 <!-- USECASES -->
