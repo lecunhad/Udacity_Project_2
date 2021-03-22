@@ -27,7 +27,6 @@
       </ul>
     </li>
     <li><a href="#run">Running</a></li>
-    <li><a href="#usecases">Use Cases</a></li>
     <li><a href="#roadmap">Roadmap</a></li>
     <li><a href="#contact">Contact</a></li>
     <li><a href="#acknowledgements">Reference</a></li>
@@ -57,7 +56,7 @@ To run the notebook, it is necessary to install the following frameworks:
 <!-- GETTING STARTED -->
 ## Getting Started
 
-The notebook was developed in the environment [Google Colab](https://colab.research.google.com/github/tensorflow/examples/blob/master/courses/udacity_intro_to_tensorflow_for_deep_learning/l01c01_introduction_to_colab_and_python.ipynb)
+The notebook was developed in the environment Udacity Workspace IDE
 
 ### Prerequisites
 
@@ -109,24 +108,14 @@ Go to app folder (cd app) and run the following command : `python run.py`
 
 Open the browser using the url http://0.0.0.0:3001 (if it doesn't work, find the workspace environmental variables with `env | grep WORK`, and you can open a new browser window and go to the address:`http://WORKSPACESPACEID-3001.WORKSPACEDOMAIN` replacing WORKSPACEID and WORKSPACEDOMAIN with your values)
 
-
-<!-- USECASES -->
-## Use Cases
-
-Motivation: Support students who wants to travel abroad to study English, in order to improve a best choice and improve the planner.
-Three business questions:
-- Can they spend less money at some specific season or period time of the year?
-- What are the accommodation information most correlated to price variation?
-- Is possible to predict the price for respective acomodation according it features? 
-
-
 <!-- ROADMAP -->
 ## Roadmap
 
-Retrain the models to improve predictions
+Retrain the model using others classifiers to improve the accuracy.
 
-Collect other relevant pieces of information of accommodations and research about the rules of prices formulation.
+Use [GridSearchCV](https://scikit-learn.org/stable/modules/grid_search.html), a cross validation technique for tuning your model.
 
+Balance the data of the database
 
 <!-- CONTACT -->
 ## Contato
