@@ -73,14 +73,31 @@ The Python version is 3.7+
 <!-- RUN -->
 ## Running
 
-There are three main folders:
+There are three main folders at the workspace:
 
-data
-disaster_categories.csv: dataset including all the categories
-disaster_messages.csv: dataset including all the messages
-process_data.py: ETL pipeline scripts to read, clean, and save data into a database
-DisasterResponse.db: output of the ETL pipeline, i.e. SQLite database containing messages and categories data
-models
+<ul>
+<li>data
+  <ul>
+    <li>disaster_categories.csv: dataset including all the categories</li>
+    <li>disaster_messages.csv: dataset including all the messages</li>
+    <li>process_data.py: ETL pipeline scripts to read, clean, and save data into a database</li>
+    <li>DisasterResponse.db: output of the ETL pipeline, i.e. SQLite database containing messages and categories data
+models</li>
+    </li>
+<li>models
+    <li>train_classifier.py: machine learning pipeline scripts to train and export a classifier</li>
+    <li>classifier.pkl: output of the machine learning pipeline, i.e. a trained classifier</li>
+    </li>
+<li>app
+<ul>
+<li>Indented item</li>
+<li>Indented item</li>
+</ul>
+</li>
+<li>Fourth item</li>
+</ul>
+
+
 train_classifier.py: machine learning pipeline scripts to train and export a classifier
 classifier.pkl: output of the machine learning pipeline, i.e. a trained classifier
 app
