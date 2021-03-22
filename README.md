@@ -83,10 +83,12 @@ There are three main folders at the workspace:
     <li>process_data.py: ETL pipeline scripts to read, clean, and save data into a database</li>
     <li>DisasterResponse.db: output of the ETL pipeline, i.e. SQLite database containing messages and categories data
 models</li>
-    </li>
+   </ul>
 <li>models
+    <ul>
     <li>train_classifier.py: machine learning pipeline scripts to train and export a classifier</li>
     <li>classifier.pkl: output of the machine learning pipeline, i.e. a trained classifier</li>
+    </ul>
     </li>
 <li>app
 <ul>
