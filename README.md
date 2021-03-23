@@ -105,7 +105,7 @@ Open the browser using the url http://0.0.0.0:3001 (if it doesn't work, find the
 
 Retrain the model using others classifiers to improve the accuracy.
 
-Use [GridSearchCV](https://scikit-learn.org/stable/modules/grid_search.html), a cross validation technique for tuning your model.
+Use more parameters on [GridSearchCV](https://scikit-learn.org/stable/modules/grid_search.html), for tuning your model.
 
 Balance the data of the database
 
