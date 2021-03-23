@@ -95,8 +95,26 @@ def build_model():
         ('clf', MultiOutputClassifier(KNeighborsClassifier()))
     ])
     
-    return pipeline
+      #Uncomment for additional parameters
+    grid_params = {
+         'clf__estimator__n_neighbors': [3,5,8],
+         'clf__estimator__weights': ['uniform','distance'],
+        # 'tfidf__use_idf': (True, False),
+         'clf__estimator__metric': ['euclidean','manhattan']
+    }
+    print(sorted(pipeline.get_params().keys()))
+    #Create Model
+    GS = GridSearchCV(
+        pipeline, 
+        grid_params,
+        verbose=1,
+        cv=2,        
+        n_jobs= -1
+    )
     
+    return GS
+    
+  
 
 
 def evaluate_model(model, X_test, Y_test, category_names):
