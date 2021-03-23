@@ -4,8 +4,10 @@ from sqlalchemy import create_engine
 
 
 def slicing(x):
+    
+    return x[:-2]
      
-        """Extract only the category:
+    """Extract only the category:
         - splits categories into separated columns
         - converts categories values to binary values
         - drop duplicated rows
@@ -16,7 +18,7 @@ def slicing(x):
         category (string): Cleaned category without binary number
     """    
     
-    return x[:-2]
+     
 
 def load_data(messages_filepath, categories_filepath):
     
