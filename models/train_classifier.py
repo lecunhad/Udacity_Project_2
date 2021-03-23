@@ -97,10 +97,10 @@ def build_model():
     
       #Uncomment for additional parameters
     grid_params = {
-         'clf__estimator__n_neighbors': [3,5,8],
+         'clf__estimator__n_neighbors': [3,5,7],
          'clf__estimator__weights': ['uniform','distance'],
         # 'tfidf__use_idf': (True, False),
-         'clf__estimator__metric': ['euclidean','manhattan']
+         #'clf__estimator__metric': ['euclidean','manhattan']
     }
     print(sorted(pipeline.get_params().keys()))
     #Create Model
@@ -109,9 +109,11 @@ def build_model():
         grid_params,
         verbose=1,
         cv=2,        
-        n_jobs= -1
+        n_jobs= -1,
+        return_train_score=True
     )
-    
+   
+  
     return GS
     
   
