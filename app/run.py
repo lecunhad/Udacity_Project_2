@@ -1,145 +1,170 @@
-import sys
+import json
+import plotly
 import pandas as pd
+
+from nltk.stem import WordNetLemmatizer
+from nltk.tokenize import word_tokenize
+
+from flask import Flask
+from flask import render_template, request, jsonify
+from plotly.graph_objs import Bar
+from sklearn.externals import joblib
 from sqlalchemy import create_engine
 
 
-def slicing(x):
-     
-        """Extract only the category:
-        - splits categories into separated columns
-        - converts categories values to binary values
-        - drop duplicated rows
-    
-    Args:
-        category-X (string -> X = binary number) : category raw format
-    Returns:
-        category (string): Cleaned category without binary number
-    """    
-    
-    return x[:-2]
+app = Flask(__name__)
 
-def load_data(messages_filepath, categories_filepath):
-    
-    """
-    Load the data from message and categories files to a dataframe
-    
-    Args:
-        messages_filepath (string): The file path of messages file
-        categories_filepath (string): The file path of categories file
-    Returns:
-        df (dataframe): Merged messages and categories df by ID.
-    """
-    
-   
-    messages_filepath = pd.read_csv(messages_filepath)
-    categories_filepath = pd.read_csv(categories_filepath)
-    
-    # merge datasets
-    df = messages_filepath.merge(categories_filepath, on = 'id')
-    
-    return df       
+def tokenize(text):
+    tokens = word_tokenize(text)
+    lemmatizer = WordNetLemmatizer()
+
+    clean_tokens = []
+    for tok in tokens:
+        clean_tok = lemmatizer.lemmatize(tok).lower().strip()
+        clean_tokens.append(clean_tok)
+
+    return clean_tokens
+
+# load data
+engine = create_engine('sqlite:///../data/DisasterResponse.db')
+df = pd.read_sql_table('Messages', engine)
+
+# load model
+model = joblib.load("../models/classifier.pkl")
 
 
+# index webpage displays cool visuals and receives user input text for model
+@app.route('/')
+@app.route('/index')
+def index():
+    
+    # extract data needed for visuals
+    # TODO: Below is an example - modify to extract data for your own visuals
+    genre_counts = df.groupby('genre').count()['message']
+    genre_names = list(genre_counts.index)
 
-def clean_data(df):
+    # Number of Messages per Category
+    categories = df.columns[5:].unique()
+    Total_messages = list(df[categories].sum())
     
-    """Clean the data:
-        - splits categories into separated columns
-        - converts categories values to binary values
-        - drop duplicated rows
+    # Top five categories count
+    top5_category_count = df.iloc[:,4:].sum().sort_values(ascending=False)[0:5]
+    top5_category_names = list(top5_category_count.index)
     
-    Args:
-        df (pandas dataframe): merged categories and messages dataframes
-    Returns:
-        df (pandas dataframe): Cleaned dataframe
-    """
-    # create a dataframe of the 36 individual category columns
-    categories = df['categories'].str.split(';')
-    
-    # select the first row of the categories dataframe
-    category = categories[0]
-    category_colnames = []
+    # create visuals
+    # TODO: Below is an example - modify to create your own visuals
+    graphs = [
+               {
+            'data': [
+                Bar(
+                    y=genre_counts,
+                    x=genre_names,
+                )
+            ],
 
-    for i in category:
-        category_colnames.append(slicing(i))
-    
-    # rename the columns of categories`
-    df = df.reindex(columns = df.columns.tolist() + category_colnames)
-    
-    #Convert category values to just numbers 0 or 1
+            'layout': {
+                'title': 'Distribution of Message Genres',
+                'yaxis': {
+                    'title': "Count"
+                },
+                'xaxis': {
+                    'title': "Genre"
+                }
+            }
+        },
+        {
+            'data': [
+                Bar(
+                    y=categories,
+                    x=Total_messages,
+                    orientation = 'h'
+                )
+            ],
 
-    cont = 0
-    list_cat = []
-    list_cat_num = []
-    final_list = []
+            'layout': {
+                'title': 'Distribution of Message Genres',
+                'yaxis': {
+                    'title': "Count"
+                },
+                'xaxis': {
+                    'title': "Genre"
+                }
+            }
+        },
+        
+        {
+  "data": [
+    {
+      "uid": "f4de1f",
+      "hole": 0.1,
+      "name": "Col2",
+      "pull": 0,
+      "type": "pie",
+      "domain": {
+        "x": [
+          0,
+          1
+        ],
+        "y": [
+          0,
+          1
+        ]
+      },
+      "marker": {
+        "colors": [
+          "#7fc97f",
+          "#beaed4",
+          "#fdc086",
+          "#ffff99",
+          "#386cb0",
+          "#f0027f"
+        ]
+      },
+      "textinfo": "label+value",
+      "hoverinfo": "all",
+      "labels": top5_category_names,
+      "values": top5_category_count,
+      "showlegend": False
+    }
+  ],
+  "layout": {
+    "title": "Top 5 Categories Count",
+    "width": 800,
+    "height": 500,
+    "autosize": False
+  },
+  "frames": []
+}
+    ]
+    
+    # encode plotly graphs in JSON
+    ids = ["graph-{}".format(i) for i, _ in enumerate(graphs)]
+    graphJSON = json.dumps(graphs, cls=plotly.utils.PlotlyJSONEncoder)
+    
+    # render web page with plotly graphs
+    return render_template('master.html', ids=ids, graphJSON=graphJSON)
 
-  #Function to get the list with category numbers for each message/line
-    for line in df['categories']:
-        list_cat = line.split(';')
-        for i in list_cat:
-            list_cat_num.append(int(i[-1]))
-        final_list.append(list_cat_num)
-        list_cat_num = []
-        list_cat = []
 
-    #concatenate the original dataframe with the new `categories` dataframe  
-    df_category = pd.DataFrame(final_list, columns = category_colnames)
-    df_first_part = df.loc[:,['id','message','original','genre']]
-    
-    concatened = pd.concat([df_first_part,df_category ],sort=False, axis = 1)
-       
-    # remove the duplicated rows
-    
-    concatened = concatened.drop_duplicates(keep = 'first')
+# web page that handles user query and displays model results
+@app.route('/go')
+def go():
+    # save user input in query
+    query = request.args.get('query', '') 
 
-    # Some numbers are non binary (2). Let's replace them to 1
-    concatened['related'] = concatened['related'].replace(2,1)
-    
-    return concatened 
+    # use model to predict classification for query
+    classification_labels = model.predict([query])[0]
+    classification_results = dict(zip(df.columns[4:], classification_labels))
 
+    # This will render the go.html Please see that file. 
+    return render_template(
+        'go.html',
+        query=query,
+        classification_result=classification_results
+    )
 
-def save_data(df, database_filename):
-    
-    """Save the processed data to a sqlite db
-    Args:
-        df (pandas dataframe): The processed dataframe
-        database_filename (string): the file path 
-    Returns:
-        None
-    """
-    
-    #Save the clean dataset into an sqlite database
-    table_name = 'Messages'   
-
-    engine = create_engine('sqlite:///{}'.format(database_filename))
-    
-    df.to_sql(table_name, engine, index=False,if_exists='replace')
-    
 
 def main():
-    if len(sys.argv) == 4:
-
-        messages_filepath, categories_filepath, database_filepath = sys.argv[1:]
-
-        print('Loading data...\n    MESSAGES: {}\n    CATEGORIES: {}'
-              .format(messages_filepath, categories_filepath))
-        df = load_data(messages_filepath, categories_filepath)
-
-        print('Cleaning data...')
-        df = clean_data(df)
-        
-        print('Saving data...\n    DATABASE: {}'.format(database_filepath))
-        save_data(df, database_filepath)
-        
-        print('Cleaned data saved to database!')
-    
-    else:
-        print('Please provide the filepaths of the messages and categories '\
-              'datasets as the first and second argument respectively, as '\
-              'well as the filepath of the database to save the cleaned data '\
-              'to as the third argument. \n\nExample: python process_data.py '\
-              'disaster_messages.csv disaster_categories.csv '\
-              'DisasterResponse.db')
+   app.run(host='0.0.0.0', port=3001, debug=True)
 
 
 if __name__ == '__main__':
