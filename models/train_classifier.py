@@ -82,7 +82,6 @@ def tokenize(text):
 
 
 def build_model():
-    
     """Returns the model
     Args:
         None
@@ -90,13 +89,13 @@ def build_model():
         model (scikit-learn KNeighborsClassifier()): Fit the model
     """
     
-     pipeline = Pipeline([
+    pipeline = Pipeline([
         ('vect', CountVectorizer(tokenizer=tokenize)),
         ('tfidf', TfidfTransformer()),       
         ('clf', MultiOutputClassifier(KNeighborsClassifier()))
     ])
     
-     return pipeline
+    return pipeline
     
 
 
@@ -122,7 +121,7 @@ def evaluate_model(model, X_test, Y_test, category_names):
         y_true = Y_test[category]
         y_pred = df_pred[cont]
         print(category)
-        print(classification_report(y_true, y_pred, digits=2))
+        print(classification_report(y_true, y_pred, digits=2,labels=np.unique(y_pred)))
         cont +=1
 
 def save_model(model, model_filepath):
